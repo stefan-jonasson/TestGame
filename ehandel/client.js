@@ -2,7 +2,7 @@ var Client = IgeClass.extend({
 	classId: 'Client',
 	init: function () {
 		ige.showStats(1);
-		ige.globalSmoothing(true);
+		ige.globalSmoothing(false);
 
 		// Load our textures
 		var self = this;
@@ -44,7 +44,7 @@ var Client = IgeClass.extend({
 				// Create the main viewport
 				self.vp1 = new IgeViewport()
 					.addComponent(IgeMousePanComponent)
-					.mousePan.limit(new IgeRect(-300, -100, 600, 200))
+					.mousePan.limit(new IgeRect(-600, -600, 600, 600))
 					.mousePan.enabled(true)
 					.id('vp1')
 					.autoSize(true)
@@ -78,10 +78,11 @@ var Client = IgeClass.extend({
 					.isometricMounts(self.isoMode)
 					.tileWidth(40)
 					.tileHeight(40)
-					.drawGrid(24)
+					.drawGrid(20)
 					.drawMouse(true)
 					.drawBounds(false)
 					.drawBoundsData(false)
+                    .translateTo(0,-450,0)
 					.occupyTile(1, 1, 1, 1, 1) // Mark tile as occupied with a value of 1 (x, y, width, height, value)
 					.occupyTile(1, 2, 1, 1, 1)
 					.occupyTile(1, 3, 1, 1, 1)
@@ -159,10 +160,6 @@ var Client = IgeClass.extend({
 					.mouseMove(function () { ige.input.stopPropagation(); })
 					.mouseUp(function () { console.log('Clicked ' + this.id()); ige.input.stopPropagation(); })
 					.mount(self.uiScene);
-
-				// Set the camera to track the character with some
-				// tracking smoothing turned on (100)
-				self.vp1.camera.trackTranslate(self.player, 100);
 
 				// Create a path finder and generate a path using
 				// the collision map data

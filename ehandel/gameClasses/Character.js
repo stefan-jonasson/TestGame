@@ -20,9 +20,13 @@ var Character = IgeEntity.extend({
 			self.texture(self._characterTexture)
 				.dimensionsFromCell();
             self.animation.define('S', [1, 2, 3, 4, 5, 6, 7, 8, 9], 8, -1)
+                .animation.define('SW', [10, 11, 12, 13, 14, 15, 16, 17, 18], 8, -1)
                 .animation.define('W', [19, 20, 21, 22, 23, 24, 25, 26, 27], 8, -1)
-                .animation.define('E', [63, 64, 65, 66, 67, 68, 69, 70, 71], 8, -1)
+                .animation.define('NW', [28, 29, 30, 31, 32, 33, 34, 35, 36], 8, -1)
                 .animation.define('N', [37, 38, 39, 40, 41, 42, 43, 44, 45], 8, -1)
+                .animation.define('NE', [46, 47, 48, 49, 50, 51, 52, 53, 54], 8, -1)
+                .animation.define('E', [55, 56, 57, 58, 59, 60, 61, 62, 63], 8, -1)
+                .animation.define('SE', [64, 65, 66, 67, 68, 69, 70, 71, 72], 8, -1)
                 .cell(1);
 
             this._restCell = 1;
@@ -36,9 +40,8 @@ var Character = IgeEntity.extend({
 	 * @return {*}
 	 */
 	walkTo: function (x, y) {
-		var self = this,
-			distX = x - this.translate().x(),
-			distY = y - this.translate().y(),
+		console.log(x,y);
+        var self = this,
 			distance = Math.distance(
 				this.translate().x(),
 				this.translate().y(),
@@ -47,27 +50,6 @@ var Character = IgeEntity.extend({
 			),
 			speed = 0.1,
 			time = (distance / speed);
-
-		// Set the animation based on direction
-		if (Math.abs(distX) > Math.abs(distY)) {
-			// Moving horizontal
-			if (distX < 0) {
-				// Moving left
-				this.animation.select('W');
-			} else {
-				// Moving right
-				this.animation.select('E');
-			}
-		} else {
-			// Moving vertical
-			if (distY < 0) {
-				// Moving up
-				this.animation.select('N');
-			} else {
-				// Moving down
-				this.animation.select('S');
-			}
-		}
 
 		// Start tweening the little person to their destination
 		this._translate.tween()

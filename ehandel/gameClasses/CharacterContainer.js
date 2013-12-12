@@ -7,7 +7,7 @@ var CharacterContainer = IgeEntity.extend({
 		IgeEntity.prototype.init.call(this);
 
 		// Setup the entity 3d bounds
-		self.size3d(20, 20, 40);
+		self.size3d(20, 20, 60);
 
 		// Create a character entity as a child of this container
 		self.character = new Character()
@@ -30,27 +30,7 @@ var CharacterContainer = IgeEntity.extend({
 
 		if (dir && (dir !== this._currentDir || !this.character.animation.playing())) {
 			this._currentDir = dir;
-
-			// The characters we are using only have four directions
-			// so convert the NW, SE, NE, SW to N, S, E, W
-			switch (dir) {
-				case 'SW':
-					dir = 'W';
-					break;
-
-				case 'SE':
-					dir = 'E';
-					break;
-
-				case 'NW':
-					dir = 'W';
-					break;
-
-				case 'NE':
-					dir = 'E';
-					break;
-			}
-
+            console.log(dir);
 			this.character.animation.start(dir);
 		}
 

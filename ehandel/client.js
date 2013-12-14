@@ -5,8 +5,23 @@ var Client = IgeClass.extend({
 		ige.globalSmoothing(false);
 
 		// Load our textures
-		var self = this;
-		this.obj = [];
+		var self = this,
+            gameTexture = [],
+            map = [];
+
+        //The size of the map
+        self.mapSize = 20;
+
+        //Create a default map with all tiles filled
+        for(var i=0; i < self.mapSize; i++) {
+            map[i] = [];
+            for(var j=0; j < self.mapSize; j++) {
+                map[i][j] = [0,1];
+            }
+        }
+
+        this.obj = [];
+        gameTexture[0] = new IgeCellSheet('assets/textures/tiles/dirtSheet.png', 4, 1);
 
 		// Create the HTML canvas
 		ige.createFrontBuffer(true);
@@ -24,14 +39,7 @@ var Client = IgeClass.extend({
 				self.mainScene = new IgeScene2d()
 					.id('mainScene')
 					.drawBounds(false)
-					.drawBoundsData(false);
-
-				self.objectScene = new IgeScene2d()
-					.id('objectScene')
-					.depth(0)
-					.drawBounds(false)
 					.drawBoundsData(false)
-					.mount(self.mainScene);
 
 				self.uiScene = new IgeScene2d()
 					.id('uiScene')
@@ -72,13 +80,42 @@ var Client = IgeClass.extend({
 					ige.input.stopPropagation();
 				});
 
+                // Add the texture and store the index ID it was given
+                self.floorTextureMap = new IgeTextureMap()
+                    .depth(0)
+                    .translateTo(0, -450, 0)
+                    .tileWidth(40)
+                    .tileHeight(40)
+                    .drawGrid(self.mapSize)
+                    .autoSection(10)
+                    //.drawMouse(true)
+                    .drawBounds(false)
+                    .isometricMounts(true)
+                    .mount(self.mainScene);
+
+                // The addTexture method also returns the index of the added
+                // texture
+                self.floorTextureMap.addTexture(gameTexture[0]);
+
+                // Paint isometric texture map
+                self.floorTextureMap.loadMap({
+                    data: map
+                });
+
+                self.objectScene = new IgeScene2d()
+                    .id('objectScene')
+                    .depth(1)
+                    .drawBounds(false)
+                    .drawBoundsData(false)
+                    .mount(self.mainScene);
+
 				// Create an isometric tile map
 				self.tileMap1 = new IgeTileMap2d()
 					.id('tileMap1')
 					.isometricMounts(self.isoMode)
 					.tileWidth(40)
 					.tileHeight(40)
-					.drawGrid(20)
+					.drawGrid(self.mapSize)
 					.drawMouse(true)
 					.drawBounds(false)
 					.drawBoundsData(false)
@@ -145,7 +182,7 @@ var Client = IgeClass.extend({
 				// the player won't move when the entity is clicked.
 				self.topBar1 = new IgeUiEntity()
 					.id('topBar1')
-					.depth(1)
+					.depth(2)
 					.backgroundColor('#474747')
 					.top(0)
 					.left(0)

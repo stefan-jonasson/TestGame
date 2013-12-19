@@ -12,9 +12,9 @@ var CharacterContainer = IgeEntity.extend({
 		// Create a character entity as a child of this container
 		self.character = new Character()
 			.id(this.id() + '_character')
-			.drawBounds(false)
+			.drawBounds(true)
 			.drawBoundsData(false)
-			.originTo(0.5, 0.6, 0.5)
+			//.originTo(0.5, 0.6, 0.5)
 			.mount(this);
 	},
 
@@ -30,7 +30,6 @@ var CharacterContainer = IgeEntity.extend({
 
 		if (dir && (dir !== this._currentDir || !this.character.animation.playing())) {
 			this._currentDir = dir;
-            console.log(dir);
 			this.character.animation.start(dir);
 		}
 

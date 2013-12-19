@@ -10,13 +10,18 @@ var Client = IgeClass.extend({
             map = [];
 
         //The size of the map
-        self.mapSize = 20;
+        self.mapSize = 21;
 
         //Create a default map with all tiles filled
-        for(var i=0; i < self.mapSize; i++) {
+        for(var i=1; i < self.mapSize-1; i++) {
             map[i] = [];
-            for(var j=0; j < self.mapSize; j++) {
-                map[i][j] = [0,1];
+            for(var j=1; j < self.mapSize-1; j++) {
+                //Change border colors
+                if (i == 1 || j == 1 || i + 2 == self.mapSize || j + 2 == self.mapSize) {
+                    map[i][j] = [0,2];
+                } else {
+                    map[i][j] = [0,1];
+                }
             }
         }
 
@@ -120,27 +125,11 @@ var Client = IgeClass.extend({
 					.drawBounds(false)
 					.drawBoundsData(false)
                     .translateTo(0,-450,0)
-					.occupyTile(1, 1, 1, 1, 1) // Mark tile as occupied with a value of 1 (x, y, width, height, value)
-					.occupyTile(1, 2, 1, 1, 1)
-					.occupyTile(1, 3, 1, 1, 1)
-					.occupyTile(1, 4, 1, 1, 1)
-					.occupyTile(2, 4, 1, 1, 1)
-					.occupyTile(4, 4, 1, 1, 1)
-					.occupyTile(4, 3, 1, 1, 1)
-					.occupyTile(4, 2, 1, 1, 1)
-					.occupyTile(3, 2, 1, 1, 1)
-					.occupyTile(3, 1, 1, 1, 1)
-					.occupyTile(1, 0, 1, 1, 1)
-					.occupyTile(1, 2, 1, 1, 1)
-					.occupyTile(2, 2, 1, 1, 1)
-					.occupyTile(3, 2, 1, 1, 1)
-					.occupyTile(4, 2, 1, 1, 1)
-					.occupyTile(5, 2, 1, 1, 1)
-					.occupyTile(5, 0, 1, 1, 1)
-					.occupyTile(6, 1, 1, 1, 1)
-					.occupyTile(6, 2, 1, 1, 1)
-					.occupyTile(6, 3, 1, 1, 1)
-					.highlightOccupied(true) // Draws a red tile wherever a tile is "occupied"
+					.occupyTile(0, 0, 21, 1, 1) // Mark tile as occupied with a value of 1 (x, y, width, height, value)
+                    .occupyTile(0, 20, 21, 1, 1)
+                    .occupyTile(0, 0, 1, 20, 1)
+                    .occupyTile(20, 0, 1, 20, 1)
+                    .highlightOccupied(true) // Draws a red tile wherever a tile is "occupied"
 					.mount(self.objectScene);
 
 				// Define a function that will be called when the
@@ -170,6 +159,12 @@ var Client = IgeClass.extend({
 					.drawBounds(false)
 					.drawBoundsData(false)
 					.mount(self.tileMap1);
+
+                self.shelf = new StockShelfContainer()
+                    .id('test')
+                    .drawBounds(true)
+                    .mount(self.tileMap1);
+
 
 				// Check if the tileMap1 is is iso mode
 				if (self.tileMap1.isometricMounts()) {
@@ -207,7 +202,7 @@ var Client = IgeClass.extend({
 				self.player
 					.path.drawPath(true) // Enable debug drawing the paths
 					.path.drawPathGlow(true) // Enable path glowing (eye candy)
-					.path.drawPathText(true); // Enable path text output
+					.path.drawPathText(false); // Enable path text output
 
 
 				// Register some event listeners for the path

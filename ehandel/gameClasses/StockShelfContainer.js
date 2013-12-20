@@ -1,31 +1,33 @@
 // Define our player character container classes
-var StockShelfContainer = IgeEntity.extend({
+var StockShelfContainer = GridItem.extend({
 	classId: 'StockShelfContainer',
 
-	init: function () {
+	init: function (parent, tileX, tileY) {
 		var self = this,
-            numBoxes = 4,
             boxes = [];
-		IgeEntity.prototype.init.call(this);
 
-		// Setup the entity 3d bounds
-		self.size3d(numBoxes * 40, 40, 40);
-        self.occupyTile(1, 1, numBoxes, 1);
+        GridItem.prototype.init.call(this, tileX, tileY, 1, 1);
 
-		// Create a character entity as a child of this container
-        for(var i = 0; i < 1; i++) {
-            boxes[i] = new StockShelf()
-                .id(this.id() + '_' + i + 'box')
-                .drawBounds(true)
-                .drawBoundsData(false)
-                .originTo(0.5 , 0.6, 0.5)
-                .mount(this);
-        }
+        // Setup the 3d bounds container (this)
+        this.isometric(true)
+            .mount(parent)
+            .size3d(parent._tileWidth, parent._tileHeight, 75)
+            .translateToTile(tileX, tileY, 0)
+            .drawBounds(true)
+            .drawBoundsData(false);
+
+        this.shelf =  new StockShelf()
+            .id(this.id() + '_box')
+            .drawBounds(true)
+            .drawBoundsData(false)
+            .originTo(0, 0, 0)
+            .mount(this)
+            .occupyTile(tileX, tileY, 1, 1);
+
 	},
-
-	update: function (ctx) {
-		IgeEntity.prototype.update.call(this, ctx);
-	}
+    translateToTile: function (tileX, tileY) {
+        return GridItem.prototype.translateToTile.call(this, (tileX) , (tileY) , 0);
+    }
 });
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = CharacterContainer; }

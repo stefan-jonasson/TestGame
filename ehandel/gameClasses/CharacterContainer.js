@@ -8,6 +8,7 @@ var CharacterContainer = IgeEntity.extend({
 
 		// Setup the entity 3d bounds
 		self.size3d(40, 40, 60);
+        self.isometric(true);
 
 		// Create a character entity as a child of this container
 		self.character = new Character()
@@ -19,11 +20,6 @@ var CharacterContainer = IgeEntity.extend({
 	},
 
 	update: function (ctx) {
-		// Set the depth to the y co-ordinate which basically
-		// makes the entity appear further in the foreground
-		// the closer they become to the bottom of the screen
-		this.depth(this._translate.y);
-
 		// Make sure the character is animating in the correct
 		// direction
 		var dir = this.path.currentDirection();

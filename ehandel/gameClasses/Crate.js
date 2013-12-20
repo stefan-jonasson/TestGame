@@ -1,24 +1,30 @@
 // Define our player character classes
-var StockShelf = IgeEntity.extend({
-	classId: 'StockShelf',
+var Crate = IgeEntity.extend({
+	classId: 'Crate',
 
 	init: function () {
 		var self = this;
 		IgeEntity.prototype.init.call(this);
 
-        self.depth(1);
-
 		// Setup the entity
+		self.depth(3);
 		// Load the character texture file
-		this._shelfTexture = new IgeCellSheet('assets/textures/sprites/shelf_box.png', 1, 1);
+		this._crateTexture = new IgeCellSheet('assets/textures/sprites/box1.png', 1, 1);
+		this._crateTextureOpen = new IgeCellSheet('assets/textures/sprites/box3.png', 1, 1);
+
         // Wait for the texture to load
-        this._shelfTexture.on('loaded', function () {
-            self.texture(self._shelfTexture)
+        this._crateTextureOpen.on('loaded', function () {
+            self.texture(self._crateTextureOpen)
                 .dimensionsFromCell()
-                .translateTo(-37,-56, 0)
                 .cell(1);
         }, false, true);
 	},
+
+
+	update: function (ctx) {
+		IgeEntity.prototype.update.call(this, ctx);
+	},
+
 	destroy: function () {
 		// Call the super class
 		IgeEntity.prototype.destroy.call(this);

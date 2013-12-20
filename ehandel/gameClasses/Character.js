@@ -10,7 +10,7 @@ var Character = IgeEntity.extend({
 		self.addComponent(IgeAnimationComponent)
 			.addComponent(IgeVelocityComponent)
 			.depth(1)
-			.size3d(40, 40, 40);
+            .size3d(40, 40, 40);
 
 		// Load the character texture file
 		this._characterTexture = new IgeCellSheet('assets/textures/sprites/womanWalking.png', 9, 8);
@@ -40,7 +40,6 @@ var Character = IgeEntity.extend({
 	 * @return {*}
 	 */
 	walkTo: function (x, y) {
-		console.log(x,y);
         var self = this,
 			distance = Math.distance(
 				this.translate().x(),
